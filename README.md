@@ -31,7 +31,7 @@ docker run --rm -p 8000:8080 -e "SPRING_PROFILES_ACTIVE=default" --name userapi-
 
 ### flunt-bit
 ```
-docker build -t "symplesims/user-service" -f ./cicd/docker/Dockerfile .
+docker build -t "symplesims/userapi-fluentbit-agent" -f ./cicd/docker/fluentbit/Dockerfile .
 ```
 
 ## cURL

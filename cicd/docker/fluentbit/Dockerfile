@@ -6,5 +6,5 @@ ADD ./cicd/docker/fluentbit/parser-app.conf /fluent-bit/parsers/
 # RUN ls -al /fluent-bit/etc
 # RUN ls -al /fluent-bit/parsers
 
-# docker build -t "symplesims/user-service" -f ./cicd/docker/Dockerfile .
+# docker build -t "symplesims/userapi-fluentbit-agent" -f ./cicd/docker/fluentbit/Dockerfile .
 # docker build --build-arg LAMBDA_TASK_ROOT="/var/task/" -t "symplesims/user-service" -f ./cicd/docker/Dockerfile .
