@@ -1,0 +1,151 @@
+{
+  "info": {
+    "name": "userapi-fluentbit",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "user-list",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/query",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "query"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user-add",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"apple.orchard\",\n    \"nick\": \"apple\",\n    \"email\": \"apple@orchard.com\",\n    \"age\": 22\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user-get",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/apple.orchard",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "apple.orchard"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user-modify",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"apple.orchard\",\n    \"nick\": \"apple\",\n    \"email\": \"apple@gmail.com\",\n    \"age\": 18\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/apple.orchard",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "apple.orchard"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user-remove",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/apple.orchard",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "apple.orchard"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
