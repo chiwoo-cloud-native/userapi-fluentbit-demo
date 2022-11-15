@@ -1,6 +1,7 @@
 package demo.symple.userapi.repository
 
 import demo.symple.userapi.entity.User
+import demo.symple.userapi.utils.NotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -54,17 +55,16 @@ class UserRepository {
             throw NullPointerException("user is null")
         }
         indexOf(user.name)?.let {
-            lists.removeAt(it)
             LocalDateTime.now().also { user.createdDts = it }
             lists[it] = user
             return user
-        } ?: throw RuntimeException("user not found.")
+        } ?: throw NotFoundException("user not found.")
     }
 
     fun delete(name: String) {
         indexOf(name)?.let {
             lists.removeAt(it)
-        } ?: throw RuntimeException("user not found.")
+        } ?: throw NotFoundException("user not found.")
     }
 
 }

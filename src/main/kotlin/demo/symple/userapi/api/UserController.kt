@@ -1,7 +1,10 @@
 package demo.symple.userapi.api
 
+import demo.symple.userapi.entity.Response
 import demo.symple.userapi.entity.User
 import demo.symple.userapi.service.UserService
+import demo.symple.userapi.utils.BadRequestException
+import demo.symple.userapi.utils.NotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -14,7 +17,7 @@ class UserController @Autowired constructor(val userService: UserService) {
 
     companion object {
         private val log = LoggerFactory.getLogger(UserController::class.java)
-        const val BASE_URI = "/api/users"
+        const val BASE_URI = "/api/v1/users"
     }
 
     @GetMapping("$BASE_URI/query")
@@ -33,35 +36,40 @@ class UserController @Autowired constructor(val userService: UserService) {
     fun get(@PathVariable(name = "name") name: String): ResponseEntity<User> {
         return try {
             ResponseEntity.ok(userService.get(name))
-        } catch (e: Throwable) {
+        } catch (e: NotFoundException) {
             log.warn(e.message, e)
             ResponseEntity.notFound().build()
         }
     }
 
     @PostMapping(BASE_URI)
-    fun add(@RequestBody user: User): ResponseEntity<String> {
+    fun add(@RequestBody user: User): ResponseEntity<Any?> {
         return try {
             log.info("added user: {}", userService.add(user))
             val location = UriComponentsBuilder.newInstance().path(BASE_URI).pathSegment(user.name).build().toUri()
-            ResponseEntity.created(location).build<String>()
-        } catch (e: Throwable) {
-            log.error(e.message, e)
-            ResponseEntity.badRequest().build()
+            ResponseEntity.created(location).build()
+        } catch (ne: NullPointerException) {
+            log.error(ne.message, ne)
+            val be = BadRequestException(ne.message, ne)
+            ResponseEntity.badRequest().body(Response(be.CODE, be.message!!))
         }
     }
 
     @PutMapping("$BASE_URI/{name}")
-    fun modify(@PathVariable(name = "name") name: String, @RequestBody user: User): ResponseEntity<User>? {
-        if (name.equals(user.name, ignoreCase = true)) {
-            log.warn("Not matched user data.")
-            return ResponseEntity.badRequest().build()
+    fun modify(@PathVariable(name = "name") name: String, @RequestBody user: User): ResponseEntity<Any>? {
+        if (!name.equals(user.name, ignoreCase = true)) {
+            val errMsg: String = "Not matched user data. name: %s, user.name: %s".format(name, user.name)
+            log.warn(errMsg)
+            return ResponseEntity.badRequest().body(Response(1001, errMsg))
         }
         return try {
             ResponseEntity.ok(userService.modify(user))
+        } catch (ne: NotFoundException) {
+            log.warn(ne.message, ne)
+            ResponseEntity.notFound().build()
         } catch (e: Throwable) {
             log.error(e.message, e)
-            ResponseEntity.notFound().build()
+            ResponseEntity.badRequest().body(e.message?.let { Response(1021, "%s".format(e.message)) })
         }
     }
 
@@ -71,9 +79,12 @@ class UserController @Autowired constructor(val userService: UserService) {
             log.info("delete user - name: {}", name)
             userService.remove(name)
             ResponseEntity.noContent().build()
-        } catch (e: Throwable) {
-            log.warn(e.message, e)
+        } catch (ne: NotFoundException) {
+            log.warn(ne.message, ne)
             ResponseEntity.notFound().build()
+        } catch (e: Throwable) {
+            log.error(e.message, e)
+            ResponseEntity.badRequest().body(e.message?.let { Response(1021, it) })
         }
     }
 

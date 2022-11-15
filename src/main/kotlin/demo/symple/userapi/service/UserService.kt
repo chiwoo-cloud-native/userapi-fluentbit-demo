@@ -5,6 +5,7 @@ import demo.symple.userapi.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class UserService @Autowired constructor(val userRepository: UserRepository) {
@@ -25,6 +26,7 @@ class UserService @Autowired constructor(val userRepository: UserRepository) {
     }
 
     fun add(user: User): User {
+        user.createdDts = LocalDateTime.now()
         return userRepository.add(user)
     }
 
