@@ -22,6 +22,14 @@ mvn spring-boot:run
 ```
 
 ## Build Image
+
+### app
+```
+docker build -t "symplesims/userapi-fluentbit" -f ./cicd/docker/app/Dockerfile .
+docker run --rm -p 8000:8080 -e "SPRING_PROFILES_ACTIVE=default" --name userapi-fluentbit symplesims/userapi-fluentbit
+```
+
+### flunt-bit
 ```
 docker build -t "symplesims/user-service" -f ./cicd/docker/Dockerfile .
 ```
