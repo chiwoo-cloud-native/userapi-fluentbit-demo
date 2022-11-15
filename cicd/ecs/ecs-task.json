@@ -1,0 +1,51 @@
+{
+  "family": "firelens-example-cloudwatch",
+  "taskRoleArn": "<Role>",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "executionRoleArn": "<Role>",
+  "memory": "2048",
+  "cpu": "1024",
+  "containerDefinitions": [
+    {
+      "essential": true,
+      "image": "<fluentbit image created in epic>",
+      "name": "log_router",
+      "firelensConfiguration": {
+        "type": "fluentbit",
+        "options": {
+          "config-file-type": "file",
+          "config-file-value": "/fluent-bit/conf/parse_springboot.conf"
+        }
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "firelens-container",
+          "awslogs-region": "us-east-1",
+          "awslogs-create-group": "true",
+          "awslogs-stream-prefix": "firelens"
+        }
+      },
+      "memoryReservation": 50
+    },
+    {
+      "essential": true,
+      "image": "<The application image uri >",
+      "name": "app",
+      "logConfiguration": {
+        "logDriver": "awsfirelens",
+        "options": {
+          "Name": "cloudwatch",
+          "region": "us-east-1",
+          "log_group_name": "/aws/ecs/containerinsights/$(ecs_cluster)/application",
+          "auto_create_group": "true",
+          "log_stream_prefix": "log_stream_name"
+        }
+      },
+      "memoryReservation": 100
+    }
+  ]
+}

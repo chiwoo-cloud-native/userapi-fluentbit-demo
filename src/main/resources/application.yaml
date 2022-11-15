@@ -1,0 +1,39 @@
+debug: false
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: userapi
+
+logging:
+  config: "classpath:config/logback-spring.xml"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: INFO
+    demo.symple: DEBUG
+    org.springframework.web: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    org.springframework.jdbc: DEBUG
+    org.springframework.kafka: TRACE
+    com.mysql.cj.jdbc: INFO
+  file:
+    name: "target/log/app.log"
+  logback:
+    rollingpolicy:
+      max-history: 5
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prd
