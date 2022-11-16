@@ -97,3 +97,5 @@ curl --location --request PUT 'http://localhost:8080/api/v1/users/apple.orchard'
 
 - [Maven Standard Directory Layout](https://www.baeldung.com/maven-directory-structure)
 - [Kotlin Plugin for Maven](https://kotlinlang.org/docs/maven.html)
+- [Get started with Kotlin](https://kotlinlang.org/docs/getting-started.html)
+- [Atomic Kotlin](https://www.atomickotlin.com/atomickotlin/)
