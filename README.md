@@ -11,6 +11,22 @@ git config --local user.name <your.name>
 git config --local -l
 ```
 
+## Project Layout
+```
+.
+├── cicd
+├── src
+│   ├── main
+│   │   ├── kotlin
+│   │   └── resources
+│   └── test
+│       └── kotlin
+│           └── demo
+├── target
+├── README.md
+└── pom.xml
+```
+
 ## Build
 ```
 mvn clean package
@@ -18,7 +34,11 @@ mvn clean package
 
 ## Run
 ```
-mvn spring-boot:run
+# by maven plugin
+mvn spring-boot:run -Dspring-boot.run.profiles=default
+
+# by jar
+java -jar -Dspring.profiles.active=default ./target/userapi-fluentbit-demo-1.0.0-SNAPSHOT.jar
 ```
 
 ## Build Image
@@ -34,7 +54,8 @@ docker run --rm -p 8000:8080 -e "SPRING_PROFILES_ACTIVE=default" --name userapi-
 docker build -t "symplesims/userapi-fluentbit-agent" -f ./cicd/docker/fluentbit/Dockerfile .
 ```
 
-## cURL
+## Test by cURL
+- Refer to [Postman](https://www.postman.com/downloads/) [collection](./cicd/postman/userapi-fluentbit-demo.postman-collection.json)
 
 ### user-add
 
@@ -70,3 +91,8 @@ curl --location --request PUT 'http://localhost:8080/api/v1/users/apple.orchard'
     "age": 18
 }'
 ```
+
+## Appendix
+
+- [Maven Standard Directory Layout](https://www.baeldung.com/maven-directory-structure)
+- [Kotlin Plugin for Maven](https://kotlinlang.org/docs/maven.html)
