@@ -1,15 +1,6 @@
-# spring-cloudwatch-metrics
-spring-cloudwatch-metrics
+# userapi-fluentbit-demo
+The 'userapi-fluentbit-demo' project practices an example of ingesting application logs to cloudwatch using fluentbit. 
 
-## Git
-```
-git clone https://github.com/chiwoo-cloud-native/userapi-fluentbit-demo.git
-
-cd userapi-fluentbit-demo
-git config --local user.email <your.email>
-git config --local user.name <your.name>
-git config --local -l
-```
 
 ## Project Layout
 ```
@@ -25,6 +16,16 @@ git config --local -l
 ├── target
 ├── README.md
 └── pom.xml
+```
+
+## Git
+```
+git clone https://github.com/chiwoo-cloud-native/userapi-fluentbit-demo.git
+
+cd userapi-fluentbit-demo
+git config --local user.email <your.email>
+git config --local user.name <your.name>
+git config --local -l
 ```
 
 ## Build
