@@ -2,6 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <springProperty scope="context" name="app.name" source="spring.application.name"/>
 
     <property name="LOG_FILE" value="./target/logs/app.log"/>
     <property name="LOG_FILE_PRD" value="./target/logs/app-prd.log"/>
@@ -49,7 +50,6 @@
         <root level="info">
             <appender-ref ref="FILE"/>
         </root>
-
     </springProfile>
 
     <springProfile name="default">
@@ -68,8 +68,7 @@
                     <pattern>
                         <pattern>{
                             "level": "%level",
-                            "module": "symple-userapi",
-                            "txId": "%X{TraceId:-}",
+                            "app": "${app.name}",
                             "thread": "%thread",
                             "class": "%logger{40}",
                             "message": "%message" }
@@ -85,6 +84,7 @@
                             <exclude>java\.base\/jdk\.internal</exclude>
                             <exclude>sun\.reflect\..*\.invoke.*</exclude>
                             <exclude>net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                            <exclude>MDCTraceFilter\.doFilter</exclude>
                         </throwableConverter>
                     </stackTrace>
                 </providers>

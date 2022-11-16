@@ -6,7 +6,7 @@ server:
 
 spring:
   application:
-    name: userapi
+    name: userapi-fluentbit
 
 logging:
   config: "classpath:config/logback-spring.xml"
