@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="app.name" source="spring.application.name"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="logback/logback-json-appender.xml"/>
+
+<!--
+    <springProfile name="dev">
+        <logger name="demo.symple" level="debug" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prd">
+        <include resource="logback/logback-file-appender.xml"/>
+        <logger name="demo.symple" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <root level="info">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+-->
+
+    <springProfile name="default">
+        <logger name="demo.symple" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="JSON"/>
+        </logger>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="JSON"/>
+        </root>
+    </springProfile>
+
+</configuration>
