@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
     <appender name="JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./target/logs/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/logs/app-%d{yyyyMMdd}-json.log</fileNamePattern>
+            <fileNamePattern>./target/logs/app-%d{yyyyMMdd}.log</fileNamePattern>
             <maxHistory>2</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
         </rollingPolicy>

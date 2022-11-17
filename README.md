@@ -42,18 +42,12 @@ mvn spring-boot:run -Dspring-boot.run.profiles=default
 java -jar -Dspring.profiles.active=default ./target/userapi-fluentbit-demo-1.0.0-SNAPSHOT.jar
 ```
 
-## Build Image
+## Runtime Environment
 
-### app
-```
-docker build -t "symplesims/userapi-fluentbit" -f ./cicd/docker/app/Dockerfile .
-docker run --rm -p 8000:8080 -e "SPRING_PROFILES_ACTIVE=default" --name userapi-fluentbit symplesims/userapi-fluentbit
-```
+- [Local](./cicd/local/HELP.md) 환경 컨테이너 서비스 구성 / 실행 
+- [Cloudwatch](./cicd/cloudwatch/HELP.md) 환경 컨테이너 서비스 구성 / 실행 
 
-### flunt-bit
-```
-docker build -t "symplesims/userapi-fluentbit-agent" -f ./cicd/docker/fluentbit/Dockerfile .
-```
+
 
 ## Test by cURL
 - Refer to [Postman](https://www.postman.com/downloads/) [collection](./cicd/postman/userapi-fluentbit-demo.postman-collection.json)
@@ -99,3 +93,10 @@ curl --location --request PUT 'http://localhost:8080/api/v1/users/apple.orchard'
 - [Kotlin Plugin for Maven](https://kotlinlang.org/docs/maven.html)
 - [Get started with Kotlin](https://kotlinlang.org/docs/getting-started.html)
 - [Atomic Kotlin](https://www.atomickotlin.com/atomickotlin/)
+- [Fluent Bit Configuration](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/configuration-file)
+- [Fluent Bit Pipeline](https://docs.fluentbit.io/manual/concepts/data-pipeline)
+- [Amazon ECS 커스텀 로거 fluentbit 구성](https://docs.aws.amazon.com/ko_kr/prescriptive-guidance/latest/patterns/create-a-custom-log-parser-for-amazon-ecs-using-a-firelens-log-router.html)
+- [Amazon ECS FireLens Examples](https://github.com/aws-samples/amazon-ecs-firelens-examples)
+- [AWS Firelens – 사용자 지정 로그 라우팅 소개](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/using_firelens.html)
+- [AWS Firelens – 컨테이너 로그 통합 관리 기능 출시](https://aws.amazon.com/ko/blogs/korea/announcing-firelens-a-new-way-to-manage-container-logs/)
+

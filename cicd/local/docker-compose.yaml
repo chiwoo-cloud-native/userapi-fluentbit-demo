@@ -1,0 +1,31 @@
+version: "3.3"
+
+services:
+  userapi:
+    image: "symplesims/userapi:latest"
+    container_name: userapi
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - shared-volume:/data/app/target/logs
+  fluent-bit:
+    # image: "fluent/fluent-bit:latest"
+    # image: "amazon/aws-for-fluent-bit:stable"
+    image: "symplesims/aws-for-fluent-bit:local"
+    #command: bash -c "sleep 3600;"
+    container_name: fluent-bit
+    volumes:
+      - shared-volume:/data/app/target/logs
+      - /tmp/lima/fluent-bit/out:/tmp
+    depends_on:
+      - userapi
+
+# Building Image for Deploy
+volumes:
+  shared-volume:
+
+
+# docker-compose -f ./cicd/local/docker-compose.yaml up
+# docker-compose -f ./cicd/local/docker-compose.yaml down
+# docker container ls
