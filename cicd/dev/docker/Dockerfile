@@ -1,13 +1,15 @@
-FROM amazon/aws-for-fluent-bit:stable
+FROM amazoncorretto:17
+CMD ["./mvnw", "clean", "package"]
+ARG JAR_FILE_PATH=target/*.jar
+ARG SPRING_PROFILES_ACTIVE
 
-ADD ./cicd/dev/docker/fluent-bit.conf /fluent-bit/etc/
-ADD ./cicd/dev/docker/parsers-custom.conf /fluent-bit/parsers/
+RUN mkdir -p /data/app
+RUN mkdir -p /data/logs
+WORKDIR /data/app
 
-COPY ./cicd/dev/docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY ${JAR_FILE_PATH} springApp.jar
 
-# Optional Metrics endpoint
-# EXPOSE 2020
+RUN ls -al /data/ /data/app
 
-# Entrypoint
-CMD /entrypoint.sh
+ENV SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE}"
+ENTRYPOINT ["java", "-jar", "springApp.jar"]

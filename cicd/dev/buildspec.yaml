@@ -1,6 +1,9 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      java: corretto17
   pre_build:
     commands:
       - echo Logging in to Amazon ECR
@@ -16,6 +19,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - echo Building the artifact...
+      - mvn clean package -DskipTests=true
       - echo Building the Docker image...
       - docker build -f ./cicd/dev/Dockerfile -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
@@ -24,3 +29,8 @@ phases:
       - echo Build completed on `date`
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+artifacts:
+  files:
+    - target/userapi-fluentbit-demo.jar
+    - buildspec.yml
+  discard-paths: yes
