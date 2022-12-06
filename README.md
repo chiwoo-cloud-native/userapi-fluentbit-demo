@@ -30,16 +30,19 @@ git config --local -l
 
 ## Build
 ```
-mvn clean package
+mvn clean package -DskipTests=true
 ```
 
 ## Run
-```
-# by maven plugin
-mvn spring-boot:run -Dspring-boot.run.profiles=default
 
-# by jar
-java -jar -Dspring.profiles.active=default ./target/userapi-fluentbit-demo-1.0.0-SNAPSHOT.jar
+- run by maven plugin 
+```
+mvn spring-boot:run -Dspring-boot.run.profiles=default
+```
+
+- run by executable jar
+```
+java -jar -Dspring.profiles.active=default ./target/userapi-fluentbit-demo.jar
 ```
 
 ## Runtime Environment
@@ -100,3 +103,90 @@ curl --location --request PUT 'http://localhost:8080/api/v1/users/apple.orchard'
 - [AWS Firelens – 사용자 지정 로그 라우팅 소개](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/using_firelens.html)
 - [AWS Firelens – 컨테이너 로그 통합 관리 기능 출시](https://aws.amazon.com/ko/blogs/korea/announcing-firelens-a-new-way-to-manage-container-logs/)
 
+### aws-for-fluent-bit 이미지 
+
+- [aws-for-fluent-](https://github.com/aws/aws-for-fluent-bit) 깃허브 프로젝트
+
+- [entrypoint.sh](https://github.com/aws/aws-for-fluent-bit/blob/mainline/entrypoint.sh) 컨테이너 런처는 `fluent-bit.conf` 설정 파일로 고정 되어 있습니다.
+```
+exec /fluent-bit/bin/fluent-bit -e /fluent-bit/firehose.so -e /fluent-bit/cloudwatch.so -e /fluent-bit/kinesis.so -c /fluent-bit/etc/fluent-bit.conf
+```
+
+- [fluent-bit.conf](https://github.com/aws/aws-for-fluent-bit/blob/mainline/fluent-bit.conf) 설정 파일은 INPUT, OUTPUT 항목이 고정 되어 있습니다.  
+특히 24224 포트는 firelens 서비스 포트 입니다.
+
+```
+[INPUT]
+    Name        forward
+    Listen      0.0.0.0
+    Port        24224
+
+[OUTPUT]
+    Name cloudwatch
+    Match   **
+    region us-east-1
+    log_group_name fluent-bit-cloudwatch
+    log_stream_prefix from-fluent-bit-
+    auto_create_group true
+```
+
+### ECS 로그 적재 Workflow
+아래 ECS Task 구성은 nginx 애플리케이션과 fluentbit 에이전트가 sidecar 로 구성되어 있으며, 내부적으로 awsfirelens 가 메시지 채널 역할을 담당 합니다.  
+다음은 애플리케이션 로그 적재 흐름 입니다.  
+ecs 애플리케이션 > stdout > awsfirelens > fluentbit > cloudwatch log-group 
+```
+{
+	"family": "firelens-example-cloudwatch",
+	"taskRoleArn": "arn:aws:iam::XXXXXXXXXXXX:role/ecs_task_iam_role",
+	"executionRoleArn": "arn:aws:iam::XXXXXXXXXXXX:role/ecs_task_execution_role",
+	"containerDefinitions": [		
+		{
+			 "essential": true,
+			 "image": "nginx",
+			 "name": "app",
+			 "logConfiguration": {
+				"logDriver":"awsfirelens",
+				"options": {
+					"Name": "cloudwatch",
+					"region": "us-west-2",
+					"log_group_name": "/aws/ecs/containerinsights/$(ecs_cluster)/application",
+					"auto_create_group": "true",
+					"log_stream_name": "$(ecs_task_id)",
+					"retry_limit": "2"
+				}
+			},
+			"memoryReservation": 100
+		},
+		{
+			"essential": true,
+			"image": "906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
+			"name": "log_router",
+			"firelensConfiguration": {
+				"type": "fluentbit"
+			},
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-group": "firelens-container",
+					"awslogs-region": "us-west-2",
+					"awslogs-create-group": "true",
+					"awslogs-stream-prefix": "firelens"
+				}
+			},
+			"memoryReservation": 50
+		},
+	]
+}
+```
+
+aws-for-fluent-bit 이 컨테이너 런타임으로 실행 할때, [CloudWatch Logs 를 위한 옵션 바인딩](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit#usage) 은 대략 아래와 같이 설정 됩니다.  
+
+```
+./fluent-bit -e ./cloudwatch.so \
+  -o cloudwatch \
+  -p "region=us-west-2" \
+  -p "log_group_name=fluent-bit-cloudwatch" \
+  -p "log_stream_name=testing" \
+  -p "auto_create_group=true"
+  -c /fluent-bit/etc/fluent-bit.conf
+```

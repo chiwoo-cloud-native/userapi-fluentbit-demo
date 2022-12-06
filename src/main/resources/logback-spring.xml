@@ -28,6 +28,14 @@
         </root>
     </springProfile>
 -->
+    <springProfile name="local">
+        <logger name="demo.symple" level="INFO" additivity="false">
+            <appender-ref ref="JSON"/>
+        </logger>
+        <root level="info">
+            <appender-ref ref="JSON"/>
+        </root>
+    </springProfile>
 
     <springProfile name="default">
         <logger name="demo.symple" level="INFO" additivity="false">

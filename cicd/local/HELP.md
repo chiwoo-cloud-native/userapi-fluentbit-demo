@@ -7,20 +7,14 @@ mvn clean package -DskipTests=true
 ```
 
 ## Build Image
-
-- app image
+- App
 ```
-docker build -t "symplesims/userapi" -f ./cicd/local/docker/app/Dockerfile .
-```
-
-- Fluent-Bit CPU
-```
-docker build -t "symplesims/aws-for-fluent-bit:local" -f ./cicd/local/docker/fluentbit-cpu/Dockerfile .
+docker build -t "symplesims/userapi:latest" -f ./cicd/local/docker/Dockerfile .
 ```
 
 - Fluent-Bit Tail
 ```
-docker build -t "symplesims/aws-for-fluent-bit:local" -f ./cicd/local/docker/fluentbit-tail/Dockerfile .
+docker build -t "symplesims/aws-for-fluent-bit:local" -f ./cicd/local/fluentbit/Dockerfile .
 ```
 
 ## Config for fluent-bit
@@ -38,4 +32,10 @@ docker-compose -f ./cicd/local/docker-compose.yaml up
 ## stop
 ```
 docker-compose -f ./cicd/local/docker-compose.yaml down
+```
+
+## prune
+```
+docker container prune
+docker image prune
 ```

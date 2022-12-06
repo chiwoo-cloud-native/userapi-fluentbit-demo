@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 
 @Controller
+@RequestMapping("${UserController.BASE_URI}")
 class UserController @Autowired constructor(val userService: UserService) {
 
     companion object {
@@ -20,7 +21,7 @@ class UserController @Autowired constructor(val userService: UserService) {
         const val BASE_URI = "/api/v1/users"
     }
 
-    @GetMapping("$BASE_URI/query")
+    @GetMapping("/query")
     fun findAllByQuery(@RequestParam(name = "name", required = false) name: String?): ResponseEntity<List<User>> {
         return try {
             val users = userService.findAll(name)
@@ -32,7 +33,7 @@ class UserController @Autowired constructor(val userService: UserService) {
         }
     }
 
-    @GetMapping("$BASE_URI/{name}")
+    @GetMapping("/{name}")
     fun get(@PathVariable(name = "name") name: String): ResponseEntity<User> {
         return try {
             ResponseEntity.ok(userService.get(name))
@@ -42,7 +43,7 @@ class UserController @Autowired constructor(val userService: UserService) {
         }
     }
 
-    @PostMapping(BASE_URI)
+    @PostMapping
     fun add(@RequestBody user: User): ResponseEntity<Any?> {
         return try {
             log.info("added user: {}", userService.add(user))
@@ -55,7 +56,7 @@ class UserController @Autowired constructor(val userService: UserService) {
         }
     }
 
-    @PutMapping("$BASE_URI/{name}")
+    @PutMapping("/{name}")
     fun modify(@PathVariable(name = "name") name: String, @RequestBody user: User): ResponseEntity<Any>? {
         if (!name.equals(user.name, ignoreCase = true)) {
             val errMsg: String = "Not matched user data. name: %s, user.name: %s".format(name, user.name)
@@ -73,7 +74,7 @@ class UserController @Autowired constructor(val userService: UserService) {
         }
     }
 
-    @DeleteMapping("$BASE_URI/{name}")
+    @DeleteMapping("/{name}")
     fun delete(@PathVariable(name = "name") name: String): ResponseEntity<Any> {
         return try {
             log.info("delete user - name: {}", name)
