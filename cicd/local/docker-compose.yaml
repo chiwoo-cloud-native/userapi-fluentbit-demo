@@ -10,7 +10,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=local"
     restart: always
     volumes:
-      - shared-volume:/data/app/target/logs
+      - shared-volume:/var/log/myapp/logs
   fluent-bit:
     # image: "fluent/fluent-bit:latest"
     # image: "amazon/aws-for-fluent-bit:stable"
@@ -18,7 +18,7 @@ services:
     #command: bash -c "sleep 3600;"
     container_name: fluentbit
     volumes:
-      - shared-volume:/data/app/target/logs
+      - shared-volume:/var/log/myapp/logs
       - /tmp/lima/fluent-bit/out:/tmp
     depends_on:
       - userapi

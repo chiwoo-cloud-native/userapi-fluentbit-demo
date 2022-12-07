@@ -23,6 +23,12 @@ spring:
     activate:
       on-profile: dev
 
+---
+spring:
+  config:
+    activate:
+      on-profile: stg
+
 logging:
   level:
     root: INFO
