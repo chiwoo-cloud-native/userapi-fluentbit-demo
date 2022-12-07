@@ -6,7 +6,9 @@ ARG SPRING_PROFILES_ACTIVE
 ENV SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE}"
 
 RUN mkdir -p /data/app
-RUN mkdir -p /data/logs
+RUN mkdir -p /var/log/myapp
+VOLUME ["/var/log/myapp"]
+
 WORKDIR /data/app
 
 COPY ${JAR_FILE_PATH} springApp.jar
