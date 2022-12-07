@@ -20,7 +20,7 @@ docker build -t "symplesims/aws-for-fluent-bit:local" -f ./cicd/local/fluentbit/
 ## Config for fluent-bit
 
 ```
-mkdir -p /tmp/lima/fluent-bit/out
+mkdir -p /tmp/lima/myapp
 ```
 
 ## Run

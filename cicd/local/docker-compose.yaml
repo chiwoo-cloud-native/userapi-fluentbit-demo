@@ -10,16 +10,19 @@ services:
       - "SPRING_PROFILES_ACTIVE=local"
     restart: always
     volumes:
-      - shared-volume:/var/log/myapp/logs
+      - shared-volume:/var/log/myapp
   fluent-bit:
-    # image: "fluent/fluent-bit:latest"
-    # image: "amazon/aws-for-fluent-bit:stable"
     image: "symplesims/aws-for-fluent-bit:local"
     #command: bash -c "sleep 3600;"
     container_name: fluentbit
+    environment:
+      - "ECS_CLUSTER_NAME=symple-as1d-demo-ecs"
+      - "ECS_AWS_REGION=ap-northeast-1"
+      - "ECS_APP_NAME=userapi"
+      - "LOG_FILEPATH=/var/log/myapp/app.log"
     volumes:
-      - shared-volume:/var/log/myapp/logs
-      - /tmp/lima/fluent-bit/out:/tmp
+      - shared-volume:/var/log/myapp
+      - /tmp/lima/myapp:/tmp
     depends_on:
       - userapi
 
