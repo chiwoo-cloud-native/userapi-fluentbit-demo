@@ -10,7 +10,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=local"
     restart: always
     volumes:
-      - shared-volume:/var/log/myapp
+      - myapp:/var/log/myapp
   fluent-bit:
     image: "symplesims/aws-for-fluent-bit:local"
     #command: bash -c "sleep 3600;"
@@ -21,14 +21,14 @@ services:
       - "ECS_APP_NAME=userapi"
       - "LOG_FILEPATH=/var/log/myapp/app.log"
     volumes:
-      - shared-volume:/var/log/myapp
+      - myapp:/var/log/myapp
       - /tmp/lima/myapp:/tmp
     depends_on:
       - userapi
 
 # Building Image for Deploy
 volumes:
-  shared-volume:
+  myapp:
 
 
 # docker-compose -f ./cicd/local/docker-compose.yaml up

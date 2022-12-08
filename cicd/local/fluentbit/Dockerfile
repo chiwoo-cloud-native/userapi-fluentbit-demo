@@ -18,3 +18,5 @@ RUN chmod +x /entrypoint.sh
 # Entrypoint
 CMD /entrypoint.sh
 
+# RUN mkdir -p /var/log/myapp
+VOLUME ["/var/log/myapp"]

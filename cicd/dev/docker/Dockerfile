@@ -13,6 +13,6 @@ WORKDIR /data/app
 
 COPY ${JAR_FILE_PATH} springApp.jar
 
-RUN ls -al /data/ /data/app
+# RUN ls -al /data/ /data/app
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-jar", "springApp.jar"]

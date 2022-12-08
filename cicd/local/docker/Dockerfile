@@ -4,6 +4,8 @@ ARG SPRING_PROFILES_ACTIVE
 ENV SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE}"
 
 RUN mkdir -p /data/app
+RUN mkdir -p /var/log/myapp
+VOLUME ["/var/log/myapp"]
 
 WORKDIR /data/app
 

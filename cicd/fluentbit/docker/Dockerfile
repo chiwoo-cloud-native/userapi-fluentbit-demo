@@ -15,9 +15,7 @@ ADD  ./cicd/fluentbit/docker/parsers/parsers-app.conf /fluent-bit/parsers/
 COPY ./cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-RUN mkdir -p /var/log/myapp
-VOLUME ["/var/log/myapp"]
-
 # Entrypoint
 CMD /entrypoint.sh
 
+VOLUME ["/var/log/myapp"]
