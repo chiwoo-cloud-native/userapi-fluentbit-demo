@@ -6,6 +6,7 @@ sed -i "s#{cluster_name}#$ECS_CLUSTER_NAME#g" /fluent-bit/etc/fluent-bit.conf
 sed -i "s#{app_name}#$ECS_APP_NAME#g" /fluent-bit/etc/fluent-bit.conf
 sed -i "s#{log_filepath}#$LOG_FILEPATH#g" /fluent-bit/etc/fluent-bit.conf
 
+ls -al /var/log/myapp/
 cat /fluent-bit/etc/fluent-bit.conf
 
 # see - https://github.com/aws/aws-for-fluent-bit/blob/mainline/entrypoint.sh
