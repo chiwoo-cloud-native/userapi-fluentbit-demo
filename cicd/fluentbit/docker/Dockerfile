@@ -18,4 +18,4 @@ RUN chmod +x /entrypoint.sh
 # Entrypoint
 CMD /entrypoint.sh
 
-VOLUME ["/var/log/myapp"]
+# VOLUME ["/var/log/myapp"]
