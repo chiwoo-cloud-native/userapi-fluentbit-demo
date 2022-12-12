@@ -25,4 +25,3 @@ cat <<EOF> /tmp/fluent-bit.conf
 
 EOF
 
-cp /tmp/fluent-bit.conf /fluent-bit/etc/
