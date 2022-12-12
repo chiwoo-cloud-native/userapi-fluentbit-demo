@@ -10,12 +10,14 @@ ENV ECS_CLUSTER_NAME=$ECS_CLUSTER_NAME
 ENV ECS_APP_NAME=$ECS_APP_NAME
 ENV LOG_FILEPATH=$LOG_FILEPATH
 
-ADD  ./cicd/fluentbit/docker/conf/fluent-bit.conf /fluent-bit/etc/
-ADD  ./cicd/fluentbit/docker/parsers/parsers-app.conf /fluent-bit/parsers/
-COPY ./cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
+ADD  cicd/fluentbit/docker/conf/fluent-bit.conf /fluent-bit/etc/
+ADD  cicd/fluentbit/docker/parsers/parsers-app.conf /fluent-bit/parsers/
+COPY cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Entrypoint
-CMD /entrypoint.sh
+COPY cicd/fluentbit/docker/genconfig.sh /genconfig.sh
+RUN chmod +x /tmp/genconfig.sh
+RUN /tmp/genconfig.sh
 
-# VOLUME ["/var/log/myapp"]
+# Entrypoint
+# CMD /entrypoint.sh
