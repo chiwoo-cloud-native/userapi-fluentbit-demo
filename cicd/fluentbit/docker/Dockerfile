@@ -12,8 +12,8 @@ ENV LOG_FILEPATH=$LOG_FILEPATH
 
 ADD  cicd/fluentbit/docker/conf/fluent-bit.conf /fluent-bit/etc/
 ADD  cicd/fluentbit/docker/parsers/parsers-app.conf /fluent-bit/parsers/
-COPY cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# COPY cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 
 COPY cicd/fluentbit/docker/genconfig.sh /tmp/genconfig.sh
 RUN chmod +x /tmp/genconfig.sh
