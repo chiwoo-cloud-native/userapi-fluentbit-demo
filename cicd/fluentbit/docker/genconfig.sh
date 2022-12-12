@@ -1,3 +1,8 @@
+echo "AWS_REGION:       $AWS_REGION"
+echo "ECS_CLUSTER_NAME: $ECS_CLUSTER_NAME"
+echo "ECS_APP_NAME:     $ECS_APP_NAME"
+echo "LOG_FILEPATH:     $LOG_FILEPATH"
+
 cat <<EOF> /tmp/fluentbit-tail.conf
 [SERVICE]
     flush               5
