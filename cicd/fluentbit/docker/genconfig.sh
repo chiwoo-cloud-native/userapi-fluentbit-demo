@@ -1,4 +1,4 @@
-cat <<EOF> /tmp/fluent-bit.conf
+cat <<EOF> /tmp/fluentbit-tail.conf
 [SERVICE]
     flush               5
     daemon              off
