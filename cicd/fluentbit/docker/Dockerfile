@@ -21,8 +21,11 @@ FROM amazon/aws-for-fluent-bit:stable
 ADD  cicd/fluentbit/docker/parsers/parsers-app.conf /fluent-bit/parsers/
 COPY --from=builder /tmp/fluentbit-tail.conf /fluent-bit/etc/
 
-#COPY ./cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
-#RUN chmod +x /entrypoint.sh
-#
-## Entrypoint
-#CMD /entrypoint.sh
+COPY cicd/fluentbit/docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Optional Metrics endpoint
+EXPOSE 2020
+
+# Entry point
+CMD /entrypoint.sh
